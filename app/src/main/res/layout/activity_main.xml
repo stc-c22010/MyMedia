@@ -37,7 +37,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:enabled="false"
+        android:enabled="true"
         android:onClick="onPlayButtonClick"
         android:text="@string/bt_play_play"
         app:layout_constraintEnd_toStartOf="@+id/btForward"
@@ -52,5 +52,18 @@
         android:layout_marginTop="8dp"
         android:text="@string/sw_loop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btBack" />
+        app:layout_constraintTop_toBottomOf="@+id/btStop" />
+
+    <Button
+        android:id="@+id/btStop"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:enabled="false"
+        android:onClick="onStopButtonClick"
+        android:text="@string/bt_play_stop"
+        app:layout_constraintEnd_toStartOf="@+id/btForward"
+        app:layout_constraintStart_toEndOf="@+id/btBack"
+        app:layout_constraintTop_toBottomOf="@+id/btPlay" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@ package jp.suntech.c22010.mymedia;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,13 +17,14 @@ import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     //メディアプレーヤーのフィールド
-    private MediaPlayer _player;
+    //private MediaPlayer _player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*
         //フィールドのメディアプレーヤーオブジェクトを作成
         _player = new MediaPlayer();
 
@@ -44,13 +46,16 @@ public class MainActivity extends AppCompatActivity {
         catch(IOException ex){
             Log.e("MediaSample", "メディアプレーヤー準備時の例外発生", ex);
         }
-
+        */
+        /*
         //スイッチを取得
         SwitchMaterial loopSwitch = findViewById(R.id.swLoop);
         //スイッチにリスナを設定
         loopSwitch.setOnCheckedChangeListener(new LoopSwitchChangedListener());
+        */
     }
 
+    /*
     //プレーヤーの再生準備が整ったときのリスナクラス
     private class PlayerPreparedListener implements MediaPlayer.OnPreparedListener {
 
@@ -79,11 +84,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
+*/
     //再生・停止ボタンが押された時の処理
     public void onPlayButtonClick(View view){
+        Intent intent = new Intent(MainActivity.this, SoundManageService.class);
+        startService(intent);
+
         //再生ボタンを取得
         Button btPlay = findViewById(R.id.btPlay);
+        Button btStop = findViewById(R.id.btStop);
+        btPlay.setEnabled(false);
+        btStop.setEnabled(true);
+        /*
         //プレーヤーが再生中ならば・・・
         if(_player.isPlaying()){
             //プレーヤーを一時停止
@@ -98,8 +110,23 @@ public class MainActivity extends AppCompatActivity {
             //再生ボタンのラベルを「一時停止」に設定
             btPlay.setText(R.string.bt_play_pause);
         }
+        */
+
+
     }
 
+    public void onStopButtonClick(View view){
+        Intent intent = new Intent(MainActivity.this, SoundManageService.class);
+
+        stopService(intent);
+
+        Button btPlay = findViewById(R.id.btPlay);
+        Button btStop = findViewById(R.id.btStop);
+        btPlay.setEnabled(true);
+        btStop.setEnabled(false);
+    }
+
+    /*
     //アクティビティの終了時の処理
     @Override
     protected void onStop() {
@@ -113,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         //親クラスのメソッド呼び出し
         super.onStop();
     }
+
 
     //戻るボタンが押されたとき
     public void onBackButtonClick(View view){
@@ -145,4 +173,5 @@ public class MainActivity extends AppCompatActivity {
             _player.setLooping(isChecked);
         }
     }
+    */
 }
