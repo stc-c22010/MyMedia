@@ -1,5 +1,8 @@
 package jp.suntech.c22010.mymedia;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
@@ -8,12 +11,16 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import java.io.IOException;
 
 public class SoundManageService extends Service {
 
     private MediaPlayer _player;
+    private static final String CHANNEL_ID = "soundmanagerservice_notification_channel";
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -23,6 +30,12 @@ public class SoundManageService extends Service {
     @Override
     public void onCreate(){
         _player = new MediaPlayer();
+
+        String name = getString(R.string.notification_channel_name);
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+        NotificationManager manager = getSystemService(NotificationManager.class);
+        manager.createNotificationChannel(channel);
     }
 
     @Override
@@ -65,6 +78,13 @@ public class SoundManageService extends Service {
 
         @Override
         public void onCompletion(MediaPlayer mp) {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(SoundManageService.this, CHANNEL_ID);
+            builder.setSmallIcon(android.R.drawable.ic_dialog_info);
+            builder.setContentTitle(getString(R.string.msg_notification_title_finish));
+            builder.setContentText(getString(R.string.msg_notification_text_finish));
+            Notification notification = builder.build();
+            NotificationManagerCompat manager = NotificationManagerCompat.from(SoundManageService.this);
+            manager.notify(100, notification);
             stopSelf();
         }
     }
